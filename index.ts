@@ -1,5 +1,5 @@
 const express = require("express");
-//const multer = require("multer");
+const multer = require("multer");
 const csvParser = require("csv-parser");
 const fs = require("fs");
 const cors = require("cors");
@@ -22,9 +22,9 @@ app.get("/api/reset", (req: any, res: any) => {
   });
 
   // Configuração do multer para fazer upload de arquivos para a pasta 'uploads'
-//const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/" });
 
-  app.post("/api/files", "csv", (req: any, res: any) => {
+  app.post("/api/files", upload.single("csv"), (req: any, res: any) => {
     if (!req.file) {
       return res.status(400).send("No file selected");
     }
