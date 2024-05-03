@@ -1,4 +1,7 @@
 const express = require("express");
+const multer = require("multer");
+const csvParser = require("csv-parser");
+const fs = require("fs");
 const cors = require("cors");
 
 const app = express();
@@ -16,6 +19,22 @@ app.get("/", (req, res) => res.json("Express on Vercel"));
 app.get("/api/reset", (req: any, res: any) => {
     results = [];
     res.json(results);
+  });
+
+  // Configuração do multer para fazer upload de arquivos para a pasta 'uploads'
+const upload = multer({ dest: "uploads/" });
+
+  app.post("/api/files", upload.single("csv"), (req: any, res: any) => {
+    if (!req.file) {
+      return res.status(400).send("No file selected");
+    }
+  
+    fs.createReadStream(req.file.path)
+      .pipe(csvParser())
+      .on("data", (data: any) => results.push(data))
+      .on("end", () => {
+        res.json(results);
+      });
   });
 
   app.get("/api/users", (req: any, res: any) => {
