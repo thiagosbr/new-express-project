@@ -1,7 +1,7 @@
 var express = require("express");
 var multer = require("multer");
-var csvParser = require("csv-parser");
-var fs = require("fs");
+// var csvParser = require("csv-parser");
+// var fs = require("fs");
 var cors = require("cors");
 var app = express();
 // Habilita o CORS para permitir requisições de outras origens
@@ -16,17 +16,17 @@ app.get("/api/reset", function (req, res) {
     res.json(results);
 });
 // Rota para lidar com o upload de arquivos CSV
-app.post("/api/files", upload.single("csv"), function (req, res) {
-    if (!req.file) {
-        return res.status(400).send("No file selected");
-    }
-    fs.createReadStream(req.file.path)
-        .pipe(csvParser())
-        .on("data", function (data) { return results.push(data); })
-        .on("end", function () {
-        res.json(results);
-    });
-});
+// app.post("/api/files", upload.single("csv"), function (req, res) {
+//     if (!req.file) {
+//         return res.status(400).send("No file selected");
+//     }
+//     fs.createReadStream(req.file.path)
+//         .pipe(csvParser())
+//         .on("data", function (data) { return results.push(data); })
+//         .on("end", function () {
+//         res.json(results);
+//     });
+// });
 app.get("/api/users", function (req, res) {
     var params = req.query;
     if (!params.q) {
